@@ -42,7 +42,7 @@ public class Shopping {
         return "Shopping: " +
                 "\nNome: " + nome +
                 "\nEndereco: " + endereco +
-                "\nLojas=" + Arrays.toString(lojas);
+                "\nLojas: " + Arrays.toString(lojas);
     }
 
     public boolean insereLoja(Loja loja){

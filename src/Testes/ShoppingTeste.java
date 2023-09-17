@@ -4,7 +4,7 @@ import models.*;
 
 import java.util.Scanner;
 
-public class TesteShopping {
+public class ShoppingTeste {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -13,7 +13,7 @@ public class TesteShopping {
         System.out.print("Digite o nome do Shopping: ");
         String nome = scanner.nextLine();
 
-        System.out.print("Digite o nome da do Shopping: ");
+        System.out.print("Digite o nome da rua do Shopping: ");
         String nomeRua = scanner.nextLine();
 
         System.out.print("Digite o nome da cidade do Shopping: ");
@@ -34,16 +34,30 @@ public class TesteShopping {
         System.out.print("Digite o complemento do Shopping: ");
         String complemento = scanner.nextLine();
 
-        Endereco enderecoLoja = new Endereco(nomeRua, cidade, estado, pais, cep, numero, complemento);
+        Endereco enderecoShopping = new Endereco(nomeRua, cidade, estado, pais, cep, numero, complemento);
 
-        System.out.println("Digite quantas lojas existem no shopping: ");
+        System.out.print("Digite quantas lojas existem no shopping: ");
         int qntLojas = scanner.nextInt();
         scanner.nextLine();
 
 
-        Shopping shopping = new Shopping(nome, enderecoLoja, qntLojas);
+        Shopping shopping = new Shopping(nome, enderecoShopping, qntLojas);
 
-        shopping.setLojas(criadorDeLojas(qntLojas));
+        shopping.setLojas(criadorDeLojas(qntLojas, enderecoShopping));
+
+        System.out.println("Crie outra loja a ser adicionada no shopping");
+        shopping.insereLoja(criaLoja(enderecoShopping));
+        System.out.println(shopping.lojaSeguroMaisCaro());
+
+        System.out.print("Digite o nome da loja que deseja remover do shopping: ");
+        String nomeLojaRemover = scanner.nextLine();
+        System.out.println(shopping.removeLoja(nomeLojaRemover));
+
+        System.out.print("Digite o tipo da loja que deseja saber a quantidade que existe no shopping: ");
+        String lojaPorTipo = scanner.nextLine();
+        shopping.quantidadeLojasPorTipo(lojaPorTipo);
+
+        System.out.println(shopping);
     }
 
     public static Endereco criaEnderecoLoja(){
@@ -73,6 +87,8 @@ public class TesteShopping {
     }
 
     public static Produto criaProdutoLoja(){
+        scanner.nextLine();
+
         System.out.print("Nome do Produto: ");
         String nomeProduto = scanner.nextLine();
 
@@ -108,22 +124,22 @@ public class TesteShopping {
         return produtos;
     }
 
-    public static Loja[] criadorDeLojas(int quantidade){
+    public static Loja[] criadorDeLojas(int quantidade, Endereco enderecoShopping){
         Loja[] lojas = new Loja[quantidade];
 
         for (int i = 0; i < quantidade; i++){
-            lojas[i] = criaLoja();
+            lojas[i] = criaLoja(enderecoShopping);
         }
 
         return lojas;
     }
 
-    public static Loja criaLoja(){
+    public static Loja criaLoja(Endereco enderecoShopping){
         Loja loja = null;
-        System.out.print("Selecione o tipo de loja a ser criado: ");
-        System.out.print("1 - Alimentação");
-        System.out.print("2 - Informática");
-        System.out.print("3 - Vestuário");
+        System.out.println("Selecione o tipo de loja a ser criado: ");
+        System.out.println("1 - Alimentação");
+        System.out.println("2 - Informática");
+        System.out.println("3 - Vestuário");
         int opcao = scanner.nextInt();
         scanner.nextLine();
 
@@ -137,42 +153,28 @@ public class TesteShopping {
         System.out.print("Digite o salário base dos funcionários da Loja: ");
         double salarioBase = scanner.nextDouble();
 
-        if (opcao == 1){
-            Endereco endereco = criaEnderecoLoja();
+        System.out.print("Digite quantos produtos a loja tem em estoque: ");
+        int qntProdutos = scanner.nextInt();
 
+        if (opcao == 1){
             System.out.println("Digite a data de CRIAÇÃO da Loja de Alimentação: ");
             Data data = criaData();
-
-            System.out.print("Digite quantos produtos a loja tem em estoque: ");
-            int qntProdutos = scanner.nextInt();
 
             System.out.println("Digite a data do ALVARÁ da Loja de Alimentação: ");
             Data dataAlvara = criaData();
 
-            loja = new Alimentacao(nomeLoja, qntFuncionarios, salarioBase, endereco, data, qntProdutos, dataAlvara);
-            criaTodosProdutos(loja);
+            loja = new Alimentacao(nomeLoja, qntFuncionarios, salarioBase, enderecoShopping, data, qntProdutos, dataAlvara);
         } else if (opcao == 2) {
-            Endereco endereco = criaEnderecoLoja();
-
             System.out.println("Digite a data de CRIAÇÃO da Loja de Informática: ");
             Data data = criaData();
-
-            System.out.print("Digite quantos produtos a loja tem em estoque: ");
-            int qntProdutos = scanner.nextInt();
 
             System.out.println("Digite o valor do seguro que a Loja de Informática paga mensalmente: ");
             double seguro = scanner.nextDouble();
 
-            loja = new Informatica(nomeLoja, qntFuncionarios, salarioBase, endereco, data, qntProdutos, seguro);
-            criaTodosProdutos(loja);
+            loja = new Informatica(nomeLoja, qntFuncionarios, salarioBase, enderecoShopping, data, qntProdutos, seguro);
         } else if (opcao == 3) {
-            Endereco endereco = criaEnderecoLoja();
-
             System.out.println("Digite a data de CRIAÇÃO da Loja de Informática: ");
             Data data = criaData();
-
-            System.out.print("Digite quantos produtos a loja tem em estoque: ");
-            int qntProdutos = scanner.nextInt();
 
             System.out.println("Digite se a loja vende produtos importados (s/n): ");
             String produtosImportados = scanner.nextLine();
@@ -181,11 +183,12 @@ public class TesteShopping {
 
             if (produtosImportados.equalsIgnoreCase("s")){result = true;}
 
-            loja = new Vestuario(nomeLoja, qntFuncionarios, salarioBase, endereco, data, qntProdutos, result);
-            criaTodosProdutos(loja);
+            loja = new Vestuario(nomeLoja, qntFuncionarios, salarioBase, enderecoShopping, data, qntProdutos, result);
         }else {
             System.out.println("Opção não reconhecida pelo programa");
         }
+
+        Produto[] produtos = criaTodosProdutos(loja);
 
         return loja;
     }
@@ -202,5 +205,4 @@ public class TesteShopping {
 
         return new Data(dia, mes, ano);
     }
-
 }
