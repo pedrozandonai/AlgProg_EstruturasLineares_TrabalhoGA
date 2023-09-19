@@ -25,7 +25,6 @@ public class LojaTeste {
 
         System.out.print("Digite o nome da rua da Loja: ");
         String nomeRua = scanner.nextLine();
-        nomeRua = scanner.nextLine();
 
         System.out.print("Digite o nome da cidade da Loja: ");
         String cidade = scanner.nextLine();
