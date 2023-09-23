@@ -1,7 +1,4 @@
-import models.Data;
-import models.Loja;
-import models.Produto;
-import models.Shopping;
+import models.*;
 
 import java.util.*;
 
@@ -43,6 +40,78 @@ public class Principal {
                                 new Data(lerInt("Digite o dia da Validade:"),
                                          lerInt("Digite o mês da Validade:"),
                                          lerInt("Digite o ano da Validade:")));
+    }
+    public static Loja criaLoja(){
+        int dia = lerInt("Diga o dia da fundação da loja:");
+        int mes = lerInt("Diga o mes(em numero) que foi fundada a loja:");
+        int ano = lerInt("Diga o ano em que foi fundada a loja:");
+
+        Endereco onde = new Endereco(
+                lerString("Diga a rua da loja:"),
+                lerString("Diga a cidade da loja:"),
+                lerString("Diga o estado da loja:"),
+                lerString("Diga o País da loja:"),
+                lerString("Diga o CEP da loja:"),
+                lerString("Diga o número da loja:"),
+                lerString("Diga o complemento da loja:"));
+
+        int op = 0;
+        while (op<1 || op > 3){
+            op = lerInt("""
+                    Escolha o tipo de loja que deseja criar:
+                    1 - Alimentação
+                    2 - Informática
+                    3 - Vestuário
+                    """);
+        }
+        return switch (op) {
+            case 1 -> new Alimentacao(
+                    lerString("Diga o nome da loja:"),
+                    lerInt("Diga a quantidade de funcionários:"),
+                    lerDouble("Diga a base salarial dos funcionários:"),
+                    onde,
+                    new Data(dia, mes, ano),
+                    lerInt("Diga a quantidade de espaço no estoque: "),
+                    new Data(
+                            lerInt("Diga o dia que recebeu o alvará:"),
+                            lerInt("Diga o mes que recebeu o alvará:"),
+                            lerInt("Diga o ano que recebeu o alvará:")));
+            case 2 -> new Informatica(
+                    lerString("Diga o nome da loja:"),
+                    lerInt("Diga a quantidade de funcionários:"),
+                    lerDouble("Diga a base salarial dos funcionários:"),
+                    onde,
+                    new Data(dia, mes, ano),
+                    lerInt("Diga a quantidade de espaço no estoque: "),
+                    lerDouble("Diga o valor do seguro de eletrônicos: ")
+            );
+            case 3 -> new Vestuario(
+                    lerString("Diga o nome da loja:"),
+                    lerInt("Diga a quantidade de funcionários:"),
+                    lerDouble("Diga a base salarial dos funcionários:"),
+                    onde,
+                    new Data(dia, mes, ano),
+                    lerInt("Diga a quantidade de espaço no estoque: "),
+                    lerString("Os produtos são importados ?").equalsIgnoreCase("sim")
+            );
+            default -> null;
+        };
+    }
+    public static Shopping criaShopping(){
+        String nome = lerString("Diga o nome do Shopping: ");
+
+        int lojas = lerInt("Diga a quantidade de lojas: ");
+
+        Endereco onde = new Endereco(
+                lerString("Diga a rua do Shopping:"),
+                lerString("Diga a cidade da Shopping:"),
+                lerString("Diga o estado da Shopping:"),
+                lerString("Diga o País da Shopping:"),
+                lerString("Diga o CEP da Shopping:"),
+                lerString("Diga o número da Shopping:"),
+                lerString("Diga o complemento da Shopping:"));
+
+        return new Shopping(nome, onde, lojas);
     }
     public static void Menu(){
         Calendar atual = Calendar.getInstance();
@@ -91,8 +160,10 @@ public class Principal {
             }
             switch (select){
                 case 1:
+                    shoppings.add(criaShopping());
                     break;
                 case 2:
+                    lojas.add(criaLoja());
                     break;
                 case 3:
                     produtos.add(criaProduto());
@@ -107,12 +178,12 @@ public class Principal {
                             int op = 1 - lerInt("Qual produto você deseja conferir? opções de 1 até " + produtos.size());
                             System.out.println(produtos.get(op).estaVencido(new Data(dia, mes, ano))
                                     ? (produtos.get(op).getNome() + " está vencido") : (produtos.get(op).getNome() + " não está vencido"));
-                            break;
                         }else {
                             if (lerInt("Deseja criar um produto ? 1 - sim") == 1){
-
+                                produtos.add(criaProduto());
                             }
                         }
+                        break;
                     }
                     if (lerInt("Nenhum produto encontrado :( \nDeseja criar um produto ?  1 - sim") == 1){
                         produtos.add(criaProduto());

@@ -41,7 +41,7 @@ public class Produto {
     public String toString() {
         return  "\nNome do Produto: " + nome +
                 "\nPreço do Produto: " + preco +
-                "\n Data de Validade do Produto: " + dataDeValidade;
+                "\nData de Validade do Produto: " + dataDeValidade;
     }
 
     // Verifica se o produto está vencido ou não com base na data atual fornecida como parâmetro
