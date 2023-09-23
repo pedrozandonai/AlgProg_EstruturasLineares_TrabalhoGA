@@ -3,16 +3,12 @@ import models.Loja;
 import models.Produto;
 import models.Shopping;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Principal {
     public static void main(String[] args) {
         Menu();
     }
-
     public static int lerInt(String texto){
         int x;
         Scanner ler = new Scanner(System.in);
@@ -49,8 +45,17 @@ public class Principal {
                                          lerInt("Digite o ano da Validade:")));
     }
     public static void Menu(){
-        Date atual = new Date();
+        Calendar atual = Calendar.getInstance();
+        int dia = atual.get(Calendar.DAY_OF_MONTH);
+        int mes = 1+atual.get(Calendar.MONTH);
+        int ano = atual.get(Calendar.YEAR);
+
+        System.out.println(dia);
+        System.out.println(mes);
+        System.out.println(ano);
+
         int select = 777;
+
         ArrayList<Produto> produtos = new ArrayList<>();
         ArrayList<Loja> lojas = new ArrayList<>();
         ArrayList<Shopping> shoppings = new ArrayList<>();
@@ -97,12 +102,22 @@ public class Principal {
                 case 5:
                     break;
                 case 6:
-                    if (!produtos.isEmpty()){
-                        if (lerInt("Você deseja verificar algum produto ja criado? 1-sim ") == 1){
-                            int op = 1-lerInt("Qual produto você deseja conferir? opções de 1 até " + produtos.size());
-                            System.out.println(produtos.get(op).estaVencido(new Data(atual.getDate(), atual.getMonth(), atual.getYear()))
-                            ?(produtos.get(op).getNome()+" está vencido"):(produtos.get(op).getNome()+"não está vencido"));
+                    if (!produtos.isEmpty()) {
+                        if (lerInt("Você deseja verificar algum produto ja criado? 1-sim ") == 1) {
+                            int op = 1 - lerInt("Qual produto você deseja conferir? opções de 1 até " + produtos.size());
+                            System.out.println(produtos.get(op).estaVencido(new Data(dia, mes, ano))
+                                    ? (produtos.get(op).getNome() + " está vencido") : (produtos.get(op).getNome() + " não está vencido"));
+                            break;
+                        }else {
+                            if (lerInt("Deseja criar um produto ? 1 - sim") == 1){
+
+                            }
                         }
+                    }
+                    if (lerInt("Nenhum produto encontrado :( \nDeseja criar um produto ?  1 - sim") == 1){
+                        produtos.add(criaProduto());
+                        System.out.println(produtos.get(0).estaVencido(new Data(dia, mes, ano))
+                                ?(produtos.get(0).getNome()+" está vencido"):(produtos.get(0).getNome()+" não está vencido"));
                     }
                     break;
                 case 7:
