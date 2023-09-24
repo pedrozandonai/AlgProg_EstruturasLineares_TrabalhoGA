@@ -169,6 +169,63 @@ public class Principal {
                     produtos.add(criaProduto());
                     break;
                 case 4:
+                    int sel = lerInt("""
+                            Você deseja remover o Produto de qual loja?
+                            1 - De uma loja em um shopping
+                            2 - De uma loja criada
+                            3 - De uma lista de Produtos
+                            """);
+                    while (sel < 1 || sel > 3) {
+                        sel = lerInt("""
+                            Opção invalida, por favor digite um dos 3 números
+                                                        
+                            Você deseja remover o Produto de qual loja?
+                            1 - De uma loja em um shopping
+                            2 - De uma loja criada
+                            3 - De uma lista de Produtos
+                            """);
+                    }
+                    switch (sel){
+                        case 1:
+                            if (!shoppings.isEmpty()){
+                                int x = 1-lerInt("Selecione o Shopping - Opções: 1 até " + shoppings.size());
+                                while (x < 0  || x > shoppings.size()){
+                                    x = 1-lerInt("Opção invalida, Selecione o Shopping - Opções: 1 até " + shoppings.size());
+                                }
+                                //Deus me ajuda
+                                int y = 1-lerInt("Selecione uma loja - Opções: 1 até " + shoppings.get(x).getLojas().length);
+                                while (y<0 || y>shoppings.get(x).getLojas().length){
+                                    y = 1-lerInt("Opção invalida, Por favor selecione uma loja - Opções: 1 até " + shoppings.get(x).getLojas().length);
+                                }
+                                boolean fez = shoppings.get(x).getLojas()[y].removeProduto(lerString("Diga o nome do produto que quer remover: "));
+                                System.out.println(fez?"Produto removido":"Produto não encontrado");
+                            }else {
+                                System.out.println("Não tem shoppings :( ");
+                            }
+                            break;
+                        case 2:
+                            if (!lojas.isEmpty()){
+                                int x = 1-lerInt("Selecione uma Loja - Opções: 1 até " + lojas.size());
+                                while (x<0 || x> lojas.size()){
+                                    x = 1-lerInt("Opção invalida, por favor selecione uma Loja - Opções: 1 até " + lojas.size());
+                                }
+                                boolean fez = lojas.get(x).removeProduto(lerString("Diga o nome do produto que deseja remover: "));
+                                System.out.println(fez?"Produto removido":"Produto não encontrado");
+                            } else {
+                                System.out.println("Não tem lojas :( ");
+                            }
+                            break;
+                        case 3:
+                            if (!produtos.isEmpty()){
+                                produtos.remove(1-lerInt("Selecione o produto que deseja remover da lista - Opções: 1 até " + produtos.size()));
+                                System.out.println("Produto removido da lista");
+                            } else {
+                                System.out.println("Não tem produtos na lista :( ");
+                            }
+                            break;
+
+                    }
+
                     break;
                 case 5:
                     break;
