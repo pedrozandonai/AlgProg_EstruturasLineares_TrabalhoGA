@@ -118,6 +118,7 @@ public class Principal {
         int dia = atual.get(Calendar.DAY_OF_MONTH);
         int mes = 1+atual.get(Calendar.MONTH);
         int ano = atual.get(Calendar.YEAR);
+        Data hoje = new Data(dia,mes,ano);
 
         System.out.println(dia);
         System.out.println(mes);
@@ -163,28 +164,57 @@ public class Principal {
                     shoppings.add(criaShopping());
                     break;
                 case 2:
-                    lojas.add(criaLoja());
+                    if (!shoppings.isEmpty()){
+                        int op = 1-lerInt("Para qual shopping deseja criar essa loja? opções 1 até " + shoppings.size());
+                        while (op<0 || op>shoppings.size()){
+                            System.out.println("Opção invalida tente de novo");
+                            op = 1-lerInt("Para qual shopping deseja criar essa loja? opções 1 até " + shoppings.size());
+                        }
+                        Loja loja = criaLoja();
+                        shoppings.get(op).insereLoja(loja);
+                        lojas.add(loja);
+                        System.out.println("Loja criada e adicionada no shopping e na lista de lojas");
+                    }else {
+                        System.out.println("Não ha shoppings para criar lojas :(");
+                    }
                     break;
                 case 3:
-                    produtos.add(criaProduto());
+                    if (!shoppings.isEmpty()){
+                        int op = 1-lerInt("Para qual shopping deseja selecionar a loja? opções 1 até " + shoppings.size());
+                        while (op<0 || op>shoppings.size()){
+                            System.out.println("Opção invalida tente de novo");
+                            op = 1-lerInt("Para qual shopping deseja selecionar a loja? opções 1 até " + shoppings.size());
+                        }
+                        int loja = 1-lerInt("Selecione a loja que deseja criar o produto: opções de 1 até " + shoppings.get(op).getLojas().length);
+                        while (loja<0 || loja>shoppings.get(op).getLojas().length){
+                            System.out.println("Opção invalida tente de novo");
+                            loja = 1-lerInt("Selecione a loja que deseja criar o produto: opções de 1 até " + shoppings.get(op).getLojas().length);
+                        }
+                        Produto produto = criaProduto();
+                        shoppings.get(op).getLojas()[loja].insereProduto(produto);
+                        produtos.add(produto);
+                    }else {
+                        System.out.println("Não ha shoppings para criar produtos :(");
+                    }
                     break;
                 case 4:
                     int sel = lerInt("""
-                            Você deseja remover o Produto de qual loja?
+                            Você deseja remover o Produto de onde?
                             1 - De uma loja em um shopping
                             2 - De uma loja criada
                             3 - De uma lista de Produtos
                             """);
                     while (sel < 1 || sel > 3) {
                         sel = lerInt("""
-                            Opção invalida, por favor digite um dos 3 números
+                            Opção invalida, por favor digite uma das 3 opções
                                                         
-                            Você deseja remover o Produto de qual loja?
+                            Você deseja remover o Produto de onde?
                             1 - De uma loja em um shopping
                             2 - De uma loja criada
                             3 - De uma lista de Produtos
                             """);
                     }
+
                     switch (sel){
                         case 1:
                             if (!shoppings.isEmpty()){
@@ -228,35 +258,154 @@ public class Principal {
 
                     break;
                 case 5:
+                    if (shoppings.isEmpty()){
+                        System.out.println("Tá vazio");
+                    }else {
+                        int x = 1-lerInt("Diga de qual shopping que deseja remover a loja: opções 1 até " + shoppings.size());
+                        while (x > shoppings.size()|| x<0){
+                            x = 1-lerInt("nenhum shopping selecionado, por favor, Diga de qual shopping que deseja remover a loja: opções 1 até " + shoppings.size());
+                        }
+                        if (shoppings.get(x).removeLoja(lerString("Diga o nome da loja que deseja remover: "))){
+                            System.out.println("Loja removida");
+                        }else {
+                            System.out.println("Loja não encontrada");
+                        }
+                    }
                     break;
                 case 6:
-                    if (!produtos.isEmpty()) {
-                        if (lerInt("Você deseja verificar algum produto ja criado? 1-sim ") == 1) {
-                            int op = 1 - lerInt("Qual produto você deseja conferir? opções de 1 até " + produtos.size());
-                            System.out.println(produtos.get(op).estaVencido(new Data(dia, mes, ano))
-                                    ? (produtos.get(op).getNome() + " está vencido") : (produtos.get(op).getNome() + " não está vencido"));
-                        }else {
-                            if (lerInt("Deseja criar um produto ? 1 - sim") == 1){
-                                produtos.add(criaProduto());
-                            }
-                        }
-                        break;
+                    int escolha = lerInt("""
+                            De onde você deseja verificar o produto?
+                            
+                            1 - De uma loja em um shopping
+                            2 - De uma loja em uma lista de lojas
+                            3 - De uma lista de produtos
+                            """);
+                    while (escolha<1||escolha>3){
+                        System.out.println("Opção invalida por favor digite novamente ");
+                        escolha = lerInt("""
+                            De onde você deseja verificar o produto?
+                            
+                            1 - De uma loja em um shopping
+                            2 - De uma loja em uma lista de lojas
+                            3 - De uma lista de produtos
+                            """);
                     }
-                    if (lerInt("Nenhum produto encontrado :( \nDeseja criar um produto ?  1 - sim") == 1){
-                        produtos.add(criaProduto());
-                        System.out.println(produtos.get(0).estaVencido(new Data(dia, mes, ano))
-                                ?(produtos.get(0).getNome()+" está vencido"):(produtos.get(0).getNome()+" não está vencido"));
+                    switch (escolha){
+                        case 1:
+                            if (!shoppings.isEmpty()) {
+                                int op = 1 - lerInt("Qual shopping? opções de 1 até " + shoppings.size());
+                                while (op<0||op> shoppings.size()) {
+                                    System.out.println("Opção invalida, por favor escolha uma das opções existentes");
+                                    op = 1-lerInt("Qual shopping? opções de 1 até " + shoppings.size());
+                                }
+                                int loja = 1-lerInt("Escolha a loja que deseja verificar o produto: opções de 1 até " + shoppings.get(op).getLojas().length);
+                                while (loja<0||loja>shoppings.get(op).getLojas().length){
+                                    System.out.println("Opção invalida selecione novamente!");
+                                    loja = 1-lerInt("Escolha a loja que deseja verificar o produto: opções de 1 até " + shoppings.get(op).getLojas().length);
+                                }
+                                int produto = 1-lerInt("Qual produto deseja verificar: opções de 1 até " + shoppings.get(op).getLojas()[loja].getEstoqueProdutos().length);
+                                while (produto<0 || produto> shoppings.get(op).getLojas()[loja].getEstoqueProdutos().length){
+                                    System.out.println("Opção invalida por favor selecione de novo");
+                                    produto = 1-lerInt("Qual produto deseja verificar: opções de 1 até " + shoppings.get(op).getLojas()[loja].getEstoqueProdutos().length);
+                                }
+                                boolean isVencido = shoppings.get(op).getLojas()[loja].getEstoqueProdutos()[produto].estaVencido(hoje);
+                                System.out.println(  isVencido ? (shoppings.get(op).getLojas()[loja].getEstoqueProdutos()[produto].getNome() + " está vencido") :
+                                                                 (shoppings.get(op).getLojas()[loja].getEstoqueProdutos()[produto].getNome() + "não está vencido"));
+                            }else {
+                                System.out.println("Sem shoppings");
+                            }
+                            break;
+                        case 2:
+                            if (!lojas.isEmpty()){
+                                int op = 1-lerInt("De qual loja deseja verificar o produto: opções de 1 até " + lojas.size());
+                                while (op<0||op>lojas.size()){
+                                    System.out.println("Opção invalida, tente de novo");
+                                    op = 1-lerInt("De qual loja deseja verificar o produto: opções de 1 até " + lojas.size());
+                                }
+                                int produto = 1-lerInt("Qual produto deseja verificar: opções de 1 até " + lojas.get(op).getEstoqueProdutos().length);
+                                while (produto<0|| produto>lojas.get(op).getEstoqueProdutos().length){
+                                    System.out.println("Opção invalida, tente de novo");
+                                    produto = 1-lerInt("Qual produto deseja verificar: opções de 1 até " + lojas.get(op).getEstoqueProdutos().length);
+                                }
+                                boolean isVencido = lojas.get(op).getEstoqueProdutos()[produto].estaVencido(hoje);
+                                System.out.println(isVencido?lojas.get(op).getEstoqueProdutos()[produto].getNome() + " está vencido" :
+                                                             lojas.get(op).getEstoqueProdutos()[produto].getNome() + "não está vencido");
+                            } else {
+                                System.out.println("Sem lojas");
+                            }
+                            break;
+                        case 3:
+                            if (!produtos.isEmpty()) {
+                                int op = 1 - lerInt("Qual produto você deseja conferir? opções de 1 até " + produtos.size());
+                                while (op<0||op>produtos.size()){
+                                    System.out.println("Opção invalida tente de novo");
+                                    op = 1 - lerInt("Qual produto você deseja conferir? opções de 1 até " + produtos.size());
+                                }
+                                System.out.println(produtos.get(op).estaVencido(hoje)
+                                        ? (produtos.get(op).getNome() + " está vencido") : (produtos.get(op).getNome() + " não está vencido"));
+                            } else {
+                                System.out.println("Lista vazia, crie um produto primeiro");
+                            }
+                        break;
                     }
                     break;
                 case 7:
+                    if (shoppings.isEmpty()){
+                        System.out.println("Não ha lojas no shopping");
+                    }else {
+                    int x = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    while (x > shoppings.size()|| x<0){
+                        x = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
+                    }
+                    System.out.println(shoppings.get(x).quantidadeLojasPorTipo(lerString("Diga o tipo de loja: ")));}
                     break;
                 case 8:
+                    if (shoppings.isEmpty()){
+                        System.out.println("Não ha lojas no shopping");
+                    }else {
+                    int y = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    while (y > shoppings.size()|| y<0){
+                        y = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
+                    }
+                    System.out.println(shoppings.get(y).lojaSeguroMaisCaro());}
                     break;
                 case 9:
+                    if (shoppings.isEmpty()){
+                        System.out.println("Não ha lojas no shopping");
+                    }else {
+                    int z = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    while (z > shoppings.size()|| z<0){
+                        z = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
+                    }
+                    int loja = lerInt("Diga qual loja deseja imprimir opções de 1 até " + shoppings.get(z).getLojas().length);
+                    while (loja<0 || loja>shoppings.get(z).getLojas().length){
+                        loja = lerInt("Seleciona uma loja por favor: opções de 1 até " + shoppings.get(z).getLojas().length);
+                    }
+                    System.out.println(shoppings.get(z).getLojas()[loja].toString());}
                     break;
                 case 10:
+                    if (shoppings.isEmpty()){
+                        System.out.println("Não ha shopping");
+                    }else {
+                    int a = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    while (a > shoppings.size()|| a<0){
+                        a = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
+                    }
+                    System.out.println(shoppings.get(a).toString());}
                     break;
                 case 11:
+                    if (shoppings.isEmpty()){
+                        System.out.println("Não ha lojas no shopping");
+                    }else {
+                    int b = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    while (b > shoppings.size()|| b<0){
+                        b = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
+                    }
+                    int loja1 = lerInt("Diga qual loja deseja imprimir opções de 1 até " + shoppings.get(b).getLojas().length);
+                    while (loja1<0 || loja1>shoppings.get(b).getLojas().length){
+                        loja1 = lerInt("Seleciona uma loja por favor: opções de 1 até " + shoppings.get(b).getLojas().length);
+                    }
+                    System.out.println(shoppings.get(b).getLojas()[loja1].totalGastosFuncionario());}
                     break;
 
             }
