@@ -120,10 +120,6 @@ public class Principal {
         int ano = atual.get(Calendar.YEAR);
         Data hoje = new Data(dia,mes,ano);
 
-        System.out.println(dia);
-        System.out.println(mes);
-        System.out.println(ano);
-
         int select = 777;
 
         ArrayList<Produto> produtos = new ArrayList<>();
@@ -353,7 +349,7 @@ public class Principal {
                     if (shoppings.isEmpty()){
                         System.out.println("Não ha lojas no shopping");
                     }else {
-                    int x = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    int x = 1 - lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
                     while (x > shoppings.size()|| x<0){
                         x = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
                     }

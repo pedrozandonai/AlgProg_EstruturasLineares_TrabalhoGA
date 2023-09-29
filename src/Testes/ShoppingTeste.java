@@ -8,7 +8,7 @@ public class ShoppingTeste {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Teste da classe Loja!");
+        System.out.println("Teste da classe Shopping!");
 
         System.out.print("Digite o nome do Shopping: ");
         String nome = scanner.nextLine();
