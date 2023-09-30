@@ -359,7 +359,7 @@ public class Principal {
                     if (shoppings.isEmpty()){
                         System.out.println("Não ha lojas no shopping");
                     }else {
-                    int y = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    int y = 1 - lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
                     while (y > shoppings.size()|| y<0){
                         y = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
                     }
@@ -369,13 +369,13 @@ public class Principal {
                     if (shoppings.isEmpty()){
                         System.out.println("Não ha lojas no shopping");
                     }else {
-                    int z = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    int z = 1 - lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
                     while (z > shoppings.size()|| z<0){
                         z = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
                     }
-                    int loja = lerInt("Diga qual loja deseja imprimir opções de 1 até " + shoppings.get(z).getLojas().length);
+                    int loja = 1 - lerInt("Diga qual loja deseja imprimir opções de 1 até " + shoppings.get(z).getLojas().length);
                     while (loja<0 || loja>shoppings.get(z).getLojas().length){
-                        loja = lerInt("Seleciona uma loja por favor: opções de 1 até " + shoppings.get(z).getLojas().length);
+                        loja = 1 - lerInt("Seleciona uma loja por favor: opções de 1 até " + shoppings.get(z).getLojas().length);
                     }
                     System.out.println(shoppings.get(z).getLojas()[loja].toString());}
                     break;
@@ -383,9 +383,9 @@ public class Principal {
                     if (shoppings.isEmpty()){
                         System.out.println("Não ha shopping");
                     }else {
-                    int a = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    int a = 1 - lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
                     while (a > shoppings.size()|| a<0){
-                        a = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
+                        a = 1 - lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
                     }
                     System.out.println(shoppings.get(a).toString());}
                     break;
@@ -393,13 +393,13 @@ public class Principal {
                     if (shoppings.isEmpty()){
                         System.out.println("Não ha lojas no shopping");
                     }else {
-                    int b = lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
+                    int b = 1 - lerInt("Diga qual shopping, opções de 1 até " + shoppings.size());
                     while (b > shoppings.size()|| b<0){
                         b = 1-lerInt("Nenhum shopping selecionado, por favor, Diga de qual shopping, opções 1 até " + shoppings.size());
                     }
-                    int loja1 = lerInt("Diga qual loja deseja imprimir opções de 1 até " + shoppings.get(b).getLojas().length);
+                    int loja1 = 1 - lerInt("Diga qual loja deseja imprimir opções de 1 até " + shoppings.get(b).getLojas().length);
                     while (loja1<0 || loja1>shoppings.get(b).getLojas().length){
-                        loja1 = lerInt("Seleciona uma loja por favor: opções de 1 até " + shoppings.get(b).getLojas().length);
+                        loja1 = 1 - lerInt("Seleciona uma loja por favor: opções de 1 até " + shoppings.get(b).getLojas().length);
                     }
                     System.out.println(shoppings.get(b).getLojas()[loja1].totalGastosFuncionario());}
                     break;
